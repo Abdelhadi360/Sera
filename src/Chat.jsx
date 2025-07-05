@@ -202,14 +202,14 @@ function Chat() {
                         rehypePlugins={[rehypeSanitize]}
                         components={{
                             p: ({ node, ...props }) => (
-                            <p {...props} className="prose prose-sm p-2 bg-violet-royal text-white rounded-xl rounded-br-sm w-fit max-w-[70%] self-end" />
+                            <p {...props} className="prose prose-sm p-2 bg-violet-royal text-white rounded-xl rounded-br-sm w-fit text-lg max-w-[90%] sm:max-w-[70%] self-end" />
                             ),
                         }}
                         >
                         {entry.question}
                     </ReactMarkdown>
 
-                    <div className="prose prose-sm p-2 bg-stone-200 rounded-xl rounded-bl-sm w-fit text-lg sm:text-base max-w-[90%]">
+                    <div className="prose prose-sm p-2 bg-stone-200 rounded-xl rounded-bl-sm w-fit text-lg sm:text-base max-w-[90%] sm:max-w-[70%]">
                         <ReactMarkdown rehypePlugins={[rehypeSanitize]}>
                             {entry.answer}
                         </ReactMarkdown>
