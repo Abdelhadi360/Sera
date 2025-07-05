@@ -24,5 +24,4 @@ dist-ssr
 *.sw?
 
 # Firebase & .env
-src/firebase/firebase.js
 .env
