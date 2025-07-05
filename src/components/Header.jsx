@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { IoMenu, IoClose } from "react-icons/io5";
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
 
 export default function Header() {
@@ -34,6 +34,15 @@ export default function Header() {
     }
   }, [isMenuOpen]);
 
+  const logoutUser = async () => {
+      try{
+          await signOut(auth);
+          navigate("/signup");
+      } catch (err) {
+          window.alert("Error to Log out, please try again later: " + err);
+      }
+  }
+
   const [isLoggedIn, setIsLoggedIn] = useState(null);
 
   useEffect(() => {
@@ -56,11 +65,11 @@ export default function Header() {
 
       <nav className='hidden sm:flex items-center gap-5 mx-5'>
         <Link to="/" className='font-bold'>Home</Link>
-        <Link to="/" className='font-bold'>Features</Link>
+        <Link to="#features" className='font-bold'>Features</Link>
         <Link to="/" className='font-bold'>Use Cases</Link>
-        <Link to="/" className='font-bold'>About</Link>
+        <Link to="/privacy" className='font-bold'>Privacy Policy</Link>
         <Link to={isLoggedIn ? "/chat" : "/login"} className='font-bold px-2 py-1 rounded-md bg-violet shadow-xl'>{isLoggedIn ? "Start Chat" : "Log In"}</Link>
-        <Link to={!isLoggedIn && "/signup"} className='font-bold px-2 py-1 rounded-md bg-pink-500 shadow-xl'>{isLoggedIn ? "Logout" : "Sign Up"}</Link>
+        <Link to={!isLoggedIn && "/signup"} onClick={isLoggedIn ? logoutUser : null} className='font-bold px-2 py-1 rounded-md bg-pink-500 shadow-xl'>{isLoggedIn ? "Logout" : "Sign Up"}</Link>
       </nav>
 
       
@@ -76,7 +85,7 @@ export default function Header() {
         <Link to="/" className='w-full px-5 py-2 border-b font-bold text-black'>Home</Link>
         <Link to="/" className='w-full px-5 py-2 border-b font-bold text-black'>Features</Link>
         <Link to="/" className='w-full px-5 py-2 border-b font-bold text-black'>Use Cases</Link>
-        <Link to="/" className='w-full px-5 py-2 border-b font-bold text-black'>About</Link>
+        <Link to="/privacy" className='w-full px-5 py-2 border-b font-bold text-black'>Privacy Policy</Link>
         <Link to={isLoggedIn ? "/chat" : "/login"}  className='w-full px-5 py-2 bg-violet rounded-md shadow-md text-white text-center'>{isLoggedIn ? "Start Chat" : "Log In"}</Link>
         <Link to={!isLoggedIn && "/signup"} className='w-full px-5 py-2 bg-pink-500 rounded-md shadow-md text-white text-center'>{isLoggedIn ? "Logout" : "Sign Up"}</Link>
       </nav>

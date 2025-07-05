@@ -3,7 +3,7 @@
 // Adding Log In page DONE
 // Remove the console.logs with actual content DONE
 // Fixing and positioning the chat box properly DONE
-// Real and Secure Routing
+// Real and Secure Routing 
 
 import React, { useEffect, useState, useRef } from 'react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
@@ -30,7 +30,6 @@ function Chat() {
     const navigate = useNavigate();
     const resRef = useRef(null);
 
-
     const handleKeyDown = (e) => {
         if(e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
@@ -44,7 +43,6 @@ function Chat() {
         const question = input;
         setInput("");
 
-        
         const newChat = [...chat, { question, answer: "Sera is thinking..." }];
         setChat(newChat);
 
@@ -55,14 +53,22 @@ function Chat() {
         const unsub = onAuthStateChanged(auth, async (user) => {
             if (user) {
             await user.reload();
+
             if (user.emailVerified) {
                 setEmail(user.email);
-                setUserPicture(user.photoURL);
+
+                const url = user.photoURL;
+                if (url && url.trim() !== "") {
+                setUserPicture(url.startsWith("http") ? url : null);
+                } else {
+                setUserPicture(null); 
+                }
+
             } else {
-                navigate("/login");
+                navigate("/verify");
             }
             } else {
-            navigate("/login");
+            navigate("/signup");
             }
         });
 
@@ -77,6 +83,7 @@ function Chat() {
             
         }
     }
+
     const aiResponse = async (question, currentChat) => {
 
         const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
@@ -167,8 +174,14 @@ function Chat() {
     <div className='h-screen overflow-y-hidden flex flex-col relative'>
         <div className='flex items-center justify-end p-2 bg-violet'>
             <div className="relative rounded-full overflow-hidden cursor-pointer border-2 border-black">
-                <img onClick={togglePictureMenu} src={userPicture === null ? user : userPicture } className='h-10' />
-                {isOpen && <div ref={profileRef} onClick={togglePictureMenu} className='absolute inset-0 rounded-full bg-red-400 text-white flex flex-col items-center justify-center'><FaXmark className='text-xl' /></div>}
+            <img
+            onClick={togglePictureMenu}
+            src={userPicture || user}
+            onError={(e) => (e.currentTarget.src = user)}
+            className="h-10 object-cover"
+            referrerPolicy="no-referrer"
+            />                
+            {isOpen && <div ref={profileRef} onClick={togglePictureMenu} className='absolute inset-0 rounded-full bg-red-400 text-white flex flex-col items-center justify-center'><FaXmark className='text-xl' /></div>}
             </div>
         </div>
         <div
@@ -196,21 +209,15 @@ function Chat() {
                         {entry.question}
                     </ReactMarkdown>
 
-                    <ReactMarkdown
-                        rehypePlugins={[rehypeSanitize]}
-                        components={{
-                            p: ({ node, ...props }) => (
-                            <p {...props} className="prose prose-sm p-2 bg-stone-200 rounded-xl rounded-bl-sm w-fit max-w-[70%]" />
-                            ),
-                        }}
-                        >
-                        {entry.answer}
-                    </ReactMarkdown>
+                    <div className="prose prose-sm p-2 bg-stone-200 rounded-xl rounded-bl-sm w-fit max-w-[70%]">
+                        <ReactMarkdown rehypePlugins={[rehypeSanitize]}>
+                            {entry.answer}
+                        </ReactMarkdown>
+                    </div>
                 </React.Fragment>
             ))}
         </div>
 
-        
         <div className="flex flex-col gap-1 p-2 overflow-hidden bg-stone-100 w-full text-gray-800">
             <textarea 
                 className='resize-none outline-none w-full p-2 bg-gray-100 border-b'
@@ -222,7 +229,6 @@ function Chat() {
                 
             <LuSend onClick={handleSend} className="text-4xl p-2 text-white bg-violet rounded-full cursor-pointer self-end"/>
         </div>
-        
     </div>
   )
 }

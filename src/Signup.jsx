@@ -15,11 +15,18 @@ function Signup() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    
-    const unsub = onAuthStateChanged(auth, (user) => {
-      if(user) navigate("/chat");
-    })
-    return () => unsub()
+    const unsub = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await user.reload();
+        if (user.emailVerified) {
+          navigate("/chat");
+        } else {
+          navigate("/verify");
+        }
+      }
+    });
+
+    return () => unsub();
   }, []);
 
   const signupUserWithEP = async (e) => {
@@ -54,7 +61,10 @@ function Signup() {
 
   const signupUserWithGitHub = async () => {
     try {
-      await signInWithPopup(auth, githubProvider);
+      const userCred = await signInWithPopup(auth, githubProvider);
+      await sendEmailVerification(userCred.user);
+
+      navigate("/verify");
     } catch (err) {
       setError("Something went wrong, please try again later.");
     }

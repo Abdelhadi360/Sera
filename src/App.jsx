@@ -6,6 +6,10 @@ import Chat from './Chat';
 import Login from './Login';
 import Screenshots from './Screenshots';
 import Verify from './Verify';
+import Features from './Features';
+import Usecases from './Usecases';
+import Privacy from './Privacy';
+import Footer from './components/Footer';
 
 function App() {
   
@@ -16,12 +20,16 @@ function App() {
           <>
             <Home />
             <Screenshots />
+            <Features />
+            <Usecases />
+            <Footer />
           </>
         } />
         <Route path="/signup" element={ <Signup /> } />
         <Route path="/chat" element={ <Chat /> } />
         <Route path="/login" element={ <Login /> } />
         <Route path="/verify" element={ <Verify /> } />
+        <Route path="/privacy" element={ <Privacy /> } />
       </Routes>
     </BrowserRouter>
   )
