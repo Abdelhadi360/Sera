@@ -209,7 +209,7 @@ function Chat() {
                         {entry.question}
                     </ReactMarkdown>
 
-                    <div className="prose prose-sm p-2 bg-stone-200 rounded-xl rounded-bl-sm w-fit max-w-[70%]">
+                    <div className="prose prose-sm p-2 bg-stone-200 rounded-xl rounded-bl-sm w-fit text-lg sm:text-base max-w-[90%]">
                         <ReactMarkdown rehypePlugins={[rehypeSanitize]}>
                             {entry.answer}
                         </ReactMarkdown>
