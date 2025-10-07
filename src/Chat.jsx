@@ -171,7 +171,7 @@ function Chat() {
     }, [isOpen]);
 
   return (
-    <div className='h-screen overflow-y-hidden flex flex-col relative'>
+    <div className='h-[100dvh] overflow-y-hidden flex flex-col relative'>
         <div className='flex items-center justify-end p-2 bg-violet'>
             <div className="relative rounded-full overflow-hidden cursor-pointer border-2 border-black">
             <img
