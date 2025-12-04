@@ -96,7 +96,7 @@ function Chat() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model:"deepseek/deepseek-r1:free",
+                model:"nousresearch/hermes-3-llama-3.1-405b:free",
                 messages: [{
                         role: "system",
                         content: "You are Sera, a helpfull assistant created by Abdelhadi Applications, You answer questions with friendly, funny, and a little serious tone, and avoid saying your name or developer unless the user asks you"
