@@ -75,7 +75,7 @@ export default function Home() {
 
 
   return (
-    <div className="bg-violet-royal overflow-x-hidden relative">
+    <div className="bg-violet-royal min-h-screen overflow-x-hidden relative">
   
     <div
         ref={circleRef}
